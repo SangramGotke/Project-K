@@ -65,8 +65,21 @@ This log tracks every productive step executed, the exact command, its descripti
 - **Commit Hash**: `9f4ea3d`
 - **Status**: Completed.
 
-### Step 010 - 2026-09-19: Push to Public GitHub Repository
+### Step 010 - 2026-09-19: Push to Public GitHub Repository & Clone to OCI VM
 - **Command**: `git push -u origin main`
 - **Destination**: `https://github.com/SangramGotke/Project-K.git`
-- **Result**: Successfully pushed branch `main` to `origin/main`. Public portfolio is live.
+- **Action**: Cloned repo onto OCI VM via `git clone https://github.com/SangramGotke/Project-K.git`.
+- **Status**: Completed.
+
+### Step 011 - 2026-09-19: Install System Audio Dependencies on OCI VM
+- **Command**: `sudo apt-get update -y && sudo apt-get install -y python3-venv python3-pip ffmpeg`
+- **Action**: Installed `ffmpeg` (v6.1.1) for -14 LUFS loudness mastering and Python virtual environment tooling.
+- **Status**: Completed.
+
+### Step 012 - 2026-09-19: Configure Audio Python Virtual Environment & Master Utilities
+- **Command**: `python3 -m venv ~/Project-K/services/audio/venv && venv/bin/pip install --upgrade pip edge-tts`
+- **Created Modules**:
+  - `services/audio/master_audio.py` (-14 LUFS EBU R128 loudness normalizer)
+  - `services/audio/pipeline_runner.py` (End-to-end TTS + Mastering orchestrator)
+  - Upgraded `n8n/workflows/01-audio-first-pipeline.json` with Webhook trigger support.
 - **Status**: Completed.

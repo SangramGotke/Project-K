@@ -1,4 +1,5 @@
 {
+  "id": "w8nAudioMvp00101",
   "name": "Audio-First Content Pipeline MVP",
   "nodes": [
     {
@@ -14,29 +15,46 @@
     },
     {
       "parameters": {
+        "httpMethod": "POST",
+        "path": "audio-pipeline",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "node-webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        240,
+        480
+      ],
+      "webhookId": "audio-pipeline-hook-001"
+    },
+    {
+      "parameters": {
         "values": {
           "string": [
             {
               "name": "topic",
-              "value": "5 Amazing Facts About Black Holes"
+              "value": "={{ $json.body?.topic || $json.topic || '5 Amazing Facts About Black Holes' }}"
             },
             {
               "name": "language",
-              "value": "English"
+              "value": "={{ $json.body?.language || $json.language || 'English' }}"
             },
             {
               "name": "target_duration",
-              "value": "5 minutes"
+              "value": "={{ $json.body?.target_duration || $json.target_duration || '5 minutes' }}"
             },
             {
               "name": "style",
-              "value": "Engaging documentary"
+              "value": "={{ $json.body?.style || $json.style || 'Engaging documentary' }}"
             }
           ],
           "number": [
             {
               "name": "target_word_count",
-              "value": 750
+              "value": "={{ $json.body?.target_word_count || $json.target_word_count || 750 }}"
             }
           ]
         },
@@ -144,6 +162,17 @@
   ],
   "connections": {
     "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Content Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Trigger": {
       "main": [
         [
           {
