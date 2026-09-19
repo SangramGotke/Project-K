@@ -33,12 +33,27 @@ This log tracks every productive step executed, the exact command, its descripti
 - **Status**: Completed.
 
 ### Step 005 - 2026-09-19: Git Init & Audio MVP Scaffold
-- **Command**: `git init`
-- **Action**: Initialized Git repository with strict `.gitignore`.
-- **Created Modules**:
-  - `prompts/research/system_prompt.md` (Research Agent prompt & schema)
-  - `prompts/script/system_prompt.md` (Scriptwriter Agent prompt & schema)
-  - `prompts/qc/system_prompt.md` (Script QC Agent prompt & schema)
-  - `n8n/workflows/README.md` (Workflow definition registry)
-  - `services/audio/README.md` (TTS engine and -14 LUFS loudness specs)
+- **Command**: `git init; git branch -M main`
+- **Action**: Initialized local Git repository with branch `main`.
+- **Scaffolded Modules**:
+  - `prompts/research/system_prompt.md`
+  - `prompts/script/system_prompt.md`
+  - `prompts/qc/system_prompt.md`
+  - `n8n/workflows/README.md`
+  - `services/audio/README.md`
+- **Status**: Completed.
+
+### Step 006 - 2026-09-19: Initial Git Commit
+- **Command**: `git add .gitignore AGENTS.md COMMAND_LOG.md README.md docs/ prompts/ n8n/ services/ && git commit -m "feat: initialize Project-K audio-first MVP architecture and prompt scaffolds"`
+- **Commit Hash**: `15341d8`
+- **Status**: Completed.
+
+### Step 007 - 2026-09-19: Check Existing n8n Workflows in Database
+- **Command**: `ssh -i "..." ubuntu@140.245.234.110 "docker exec n8n-postgres psql -U n8n -d n8n -c 'SELECT id, name, active FROM workflow_entity;'"`
+- **Result**: `0 rows` found. n8n is clean and ready for workflow import.
+- **Status**: Completed.
+
+### Step 008 - 2026-09-19: Construct Audio-First MVP Workflow & TTS Engine Script
+- **Action**: Created `n8n/workflows/01-audio-first-pipeline.json` and `services/audio/generate_tts.py`.
+- **Description**: Implemented the complete 7-stage workflow (Trigger -> Input -> Research -> Script -> QC -> TTS -> Metadata) and the Edge-TTS neural speech generation utility.
 - **Status**: Completed.

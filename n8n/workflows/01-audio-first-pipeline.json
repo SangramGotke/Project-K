@@ -1,0 +1,228 @@
+{
+  "name": "Audio-First Content Pipeline MVP",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "node-manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "topic",
+              "value": "5 Amazing Facts About Black Holes"
+            },
+            {
+              "name": "language",
+              "value": "English"
+            },
+            {
+              "name": "target_duration",
+              "value": "5 minutes"
+            },
+            {
+              "name": "style",
+              "value": "Engaging documentary"
+            }
+          ],
+          "number": [
+            {
+              "name": "target_word_count",
+              "value": 750
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-content-input",
+      "name": "Content Input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\n\n// Stage 02: Research Preparation\nconst researchPrompt = `You are the Lead Researcher for a YouTube content automation pipeline.\nGather accurate, high-retention facts, hooks, and narrative structures for:\nTopic: ${item.topic}\nTarget Duration: ${item.target_duration}\nLanguage: ${item.language}\nStyle: ${item.style}\n\nProvide the response in strict JSON format matching the schema in prompts/research/system_prompt.md.`;\n\nreturn {\n  json: {\n    ...item,\n    research_prompt: researchPrompt,\n    stage: '02_research'\n  }\n};"
+      },
+      "id": "node-research-prep",
+      "name": "Research Agent Prep",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\n\n// Mock or router response for Research Agent\nconst mockResearchOutput = {\n  topic: item.topic,\n  hook_angles: [\n    \"What if our universe is actually inside a black hole?\",\n    \"Time stops completely at the event horizon — but why?\"\n  ],\n  core_facts: [\n    {\n      fact: \"Supermassive black holes like Sagittarius A* anchor galaxies with millions of solar masses.\",\n      context: \"Discovered at the center of the Milky Way.\"\n    },\n    {\n      fact: \"Spaghettification stretches matter infinitely due to extreme tidal gravity differences.\",\n      context: \"Astrophysical phenomenon first coined by Stephen Hawking.\"\n    },\n    {\n      fact: \"Black holes can slowly evaporate over trillions of years via Hawking Radiation.\",\n      context: \"Theoretical quantum effect at the event horizon.\"\n    }\n  ],\n  narrative_arc: [\n    { section: \"Intro\", focus: \"Curiosity hook: The monster in the cosmic dark\" },\n    { section: \"Fact 1 & 2\", focus: \"Scale, event horizons, and gravity distortion\" },\n    { section: \"Fact 3 & 4\", focus: \"Spaghettification and time dilation\" },\n    { section: \"Fact 5 & Outro\", focus: \"Hawking radiation and the cosmic horizon\" }\n  ]\n};\n\nreturn {\n  json: {\n    ...item,\n    research_data: mockResearchOutput,\n    stage: '02_research_completed'\n  }\n};"
+      },
+      "id": "node-research-agent",
+      "name": "Research Agent (Router Mock/API)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\n\n// Stage 03: Scriptwriter Agent\nconst fullNarration = `Imagine a place where gravity is so intense that not even light can escape. A boundary beyond which time itself grinds to a halt. Welcome to the mysterious world of black holes. At the very center of our galaxy lies Sagittarius A*, a gargantuan cosmic monster containing the mass of over four million suns. But what would actually happen if you fell in? First, extreme gravitational gradients would stretch you out in a process astrophysicists literally call spaghettification. As you cross the event horizon, an outside observer would see you freeze in time forever. Yet, these titans aren't eternal. Through Hawking radiation, black holes slowly lose energy over trillions of years until they vanish with a final cosmic flash. The universe is far stranger than we can imagine.`;\n\nconst wordCount = fullNarration.trim().split(/\\s+/).length;\n\nreturn {\n  json: {\n    ...item,\n    script: {\n      title: item.topic,\n      word_count: wordCount,\n      estimated_duration_seconds: Math.round((wordCount / 145) * 60),\n      narration_text: fullNarration\n    },\n    stage: '03_script_generated'\n  }\n};"
+      },
+      "id": "node-scriptwriter-agent",
+      "name": "Scriptwriter Agent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\n\n// Stage 04: Script QC Agent\nconst script = item.script;\nconst passedPacing = script.word_count >= 50;\n\nconst qcReport = {\n  passed: passedPacing,\n  quality_score: 95,\n  retention_assessment: \"High opening hook retention, clean spoken cadence.\",\n  approved_text: script.narration_text\n};\n\nreturn {\n  json: {\n    ...item,\n    qc_report: qcReport,\n    stage: '04_qc_approved'\n  }\n};"
+      },
+      "id": "node-script-qc",
+      "name": "Script QC Agent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1340,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\n\n// Stage 05: TTS Synthesis Router\nconst ttsPlan = {\n  provider: 'edge-tts',\n  voice: 'en-US-ChristopherNeural',\n  rate: '+0%',\n  pitch: '+0Hz',\n  text_to_synthesize: item.qc_report.approved_text,\n  output_format: 'mp3',\n  target_lufs: -14.0\n};\n\nreturn {\n  json: {\n    ...item,\n    tts_plan: ttsPlan,\n    stage: '05_tts_ready'\n  }\n};"
+      },
+      "id": "node-tts-router",
+      "name": "TTS Router (Voice & Settings)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "pipeline_status",
+              "value": "SUCCESS"
+            },
+            {
+              "name": "completed_at",
+              "value": "={{ new Date().toISOString() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-save-metadata",
+      "name": "Save Metadata & Finalize",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        1780,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Content Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Input": {
+      "main": [
+        [
+          {
+            "node": "Research Agent Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research Agent Prep": {
+      "main": [
+        [
+          {
+            "node": "Research Agent (Router Mock/API)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research Agent (Router Mock/API)": {
+      "main": [
+        [
+          {
+            "node": "Scriptwriter Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scriptwriter Agent": {
+      "main": [
+        [
+          {
+            "node": "Script QC Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Script QC Agent": {
+      "main": [
+        [
+          {
+            "node": "TTS Router (Voice & Settings)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TTS Router (Voice & Settings)": {
+      "main": [
+        [
+          {
+            "node": "Save Metadata & Finalize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
