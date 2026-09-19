@@ -49,11 +49,18 @@ This log tracks every productive step executed, the exact command, its descripti
 - **Status**: Completed.
 
 ### Step 007 - 2026-09-19: Check Existing n8n Workflows in Database
-- **Command**: `ssh -i "..." ubuntu@140.245.234.110 "docker exec n8n-postgres psql -U n8n -d n8n -c 'SELECT id, name, active FROM workflow_entity;'"`
+- **Command**: `ssh -i "..." ubuntu@<OCI_VM_PUBLIC_IP> "docker exec n8n-postgres psql -U n8n -d n8n -c 'SELECT id, name, active FROM workflow_entity;'"`
 - **Result**: `0 rows` found. n8n is clean and ready for workflow import.
 - **Status**: Completed.
 
 ### Step 008 - 2026-09-19: Construct Audio-First MVP Workflow & TTS Engine Script
 - **Action**: Created `n8n/workflows/01-audio-first-pipeline.json` and `services/audio/generate_tts.py`.
 - **Description**: Implemented the complete 7-stage workflow (Trigger -> Input -> Research -> Script -> QC -> TTS -> Metadata) and the Edge-TTS neural speech generation utility.
+- **Commit Hash**: `c3f1749`
 - **Status**: Completed.
+
+### Step 009 - 2026-09-19: Portfolio Sanitization & GitHub Remote Configuration
+- **Action**: Sanitized public IP and key paths across documentation; configured GitHub remote origin.
+- **Command**: `git remote add origin https://github.com/SangramGotke/Project-K.git`
+- **Commit Hash**: `9f4ea3d`
+- **Status**: Completed. Ready for push.
