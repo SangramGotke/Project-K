@@ -15,7 +15,7 @@
 Remote commands are executed using OpenSSH with the identity key:
 ```powershell
 # Executing commands non-interactively on the VM
-ssh -i "<PATH_TO_SSH_KEY>" -o BatchMode=yes ubuntu@<OCI_VM_PUBLIC_IP> "<COMMAND>"
+ssh -i "C:\Users\gotke\Downloads\ssh-key-2026-09-07.key" ubuntu@140.245.234.110
 ```
 
 ### SSH Tunnel for n8n UI
