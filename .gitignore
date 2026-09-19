@@ -1,0 +1,42 @@
+# Environment & Secrets
+.env
+.env.*
+*.key
+*.pem
+credentials*
+secrets*
+*.csv
+
+# Existing personal/download files in Desktop folder
+*.pdf
+*.jpg
+*.jpeg
+*.png
+*.rar
+*.zip
+*.html
+*.txt
+_Getintopc*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs & temp
+*.log
+tmp/
+temp/
+
+# OS specific
+Thumbs.db
+.DS_Store
+desktop.ini
