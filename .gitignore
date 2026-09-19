@@ -16,6 +16,8 @@ secrets*
 *.zip
 *.html
 *.txt
+!requirements.txt
+!**/requirements.txt
 _Getintopc*
 
 # Python
