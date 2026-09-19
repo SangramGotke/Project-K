@@ -12,12 +12,12 @@ This log tracks every productive step executed, the exact command, its descripti
 - **Status**: Completed.
 
 ### Step 002 - 2026-09-19: Test SSH Connectivity to OCI VM
-- **Command**: `ssh -v -i "C:\Users\gotke\Downloads\ssh-key-2026-09-07.key" -o BatchMode=yes -o StrictHostKeyChecking=accept-new -o ConnectTimeout=5 ubuntu@140.245.234.110 "echo CONNECTED"`
-- **Description**: Verify remote shell access to OCI Ubuntu VM (`140.245.234.110`) using key authentication.
+- **Command**: `ssh -v -i "<PATH_TO_SSH_KEY>" -o BatchMode=yes -o StrictHostKeyChecking=accept-new -o ConnectTimeout=5 ubuntu@<OCI_VM_PUBLIC_IP> "echo CONNECTED"`
+- **Description**: Verify remote shell access to OCI Ubuntu VM using key authentication.
 - **Status**: Completed (Authenticated successfully in 0.5s).
 
 ### Step 003 - 2026-09-19: Comprehensive Baseline Inspection of OCI VM
-- **Command**: `ssh -i "C:\Users\gotke\Downloads\ssh-key-2026-09-07.key" -o BatchMode=yes ubuntu@140.245.234.110 "echo '=== SYSTEM INFO ===' && uname -a && ... && docker ps -a && ..."`
+- **Command**: `ssh -i "<PATH_TO_SSH_KEY>" -o BatchMode=yes ubuntu@<OCI_VM_PUBLIC_IP> "echo '=== SYSTEM INFO ===' && uname -a && ... && docker ps -a && ..."`
 - **Description**: Read-only discovery of host OS, running Docker containers, Compose configuration, and network bindings.
 - **Findings**:
   - Host: Ubuntu 24.04 (`n8n-automationvm`), user `ubuntu`.

@@ -6,7 +6,7 @@
   - Source code, workflows, prompts, documentation, scripts.
   - SSH port forwarding client.
 - **Remote Host (OCI Ubuntu VM)**:
-  - Compute Host: `140.245.234.110` (`ubuntu`)
+  - Compute Host: Configured via OCI (`ubuntu`)
   - Runtime environment: Docker, n8n, PostgreSQL (`~/n8n-stack/`).
 
 ---
@@ -15,13 +15,13 @@
 Remote commands are executed using OpenSSH with the identity key:
 ```powershell
 # Executing commands non-interactively on the VM
-ssh -i "C:\Users\gotke\Downloads\ssh-key-2026-09-07.key" -o BatchMode=yes ubuntu@140.245.234.110 "<COMMAND>"
+ssh -i "<PATH_TO_SSH_KEY>" -o BatchMode=yes ubuntu@<OCI_VM_PUBLIC_IP> "<COMMAND>"
 ```
 
 ### SSH Tunnel for n8n UI
 To securely open the n8n dashboard on your local browser:
 ```powershell
-ssh -i "C:\Users\gotke\Downloads\ssh-key-2026-09-07.key" -L 5678:localhost:5678 ubuntu@140.245.234.110
+ssh -i "<PATH_TO_SSH_KEY>" -L 5678:localhost:5678 ubuntu@<OCI_VM_PUBLIC_IP>
 ```
 Open `http://localhost:5678` in your browser.
 

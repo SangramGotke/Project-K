@@ -29,7 +29,7 @@ Final Audio File (.mp3/.wav)
 - **Server**: Oracle Cloud Infrastructure (OCI) Compute Instance
 - **OS**: Ubuntu 24.04 LTS (Kernel 6.17.0-1020-oracle)
 - **Hostname**: `n8n-automationvm`
-- **Public IP**: `140.245.234.110` (SSH key authentication only)
+- **Public IP**: Configured via OCI (access controlled via SSH key)
 - **Container Engine**: Docker & Docker Compose
 - **Orchestration**: n8n (`docker.n8n.io/n8nio/n8n:latest`) bound to `127.0.0.1:5678`
 - **Database**: PostgreSQL 16 (`n8n-postgres`) on internal Docker network `n8n_network`
@@ -41,7 +41,7 @@ Final Audio File (.mp3/.wav)
 
 ```powershell
 # Run from your local Windows machine:
-ssh -i "C:\Users\gotke\Downloads\ssh-key-2026-09-07.key" -L 5678:localhost:5678 ubuntu@140.245.234.110
+ssh -i "<PATH_TO_SSH_KEY>" -L 5678:localhost:5678 ubuntu@<OCI_VM_PUBLIC_IP>
 ```
 Then open `http://localhost:5678` in your local browser.
 
